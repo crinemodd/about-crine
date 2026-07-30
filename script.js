@@ -1,5 +1,32 @@
 // Clean, modular physics rewrite for letters and links
 
+// Global error overlay to surface runtime errors on deployments (helps debug white screens)
+(function installErrorOverlay(){
+  function show(msg){
+    try{
+      const existing = document.getElementById('error-overlay');
+      if(existing) existing.remove();
+      const o = document.createElement('div');
+      o.id = 'error-overlay';
+      o.style.position = 'fixed'; o.style.inset = '12px'; o.style.padding = '18px'; o.style.zIndex = 20000;
+      o.style.background = 'rgba(8,8,8,0.95)'; o.style.color = 'white'; o.style.border = '1px solid rgba(255,0,0,0.2)';
+      o.style.fontFamily = 'monospace'; o.style.fontSize = '13px'; o.style.overflow = 'auto'; o.style.maxHeight = '80%';
+      o.innerText = msg;
+      document.body.appendChild(o);
+    }catch(e){ console.error('Could not show error overlay', e); }
+  }
+  window.addEventListener('error', (ev)=>{
+    const msg = (ev && ev.error && ev.error.stack) ? ev.error.stack : (ev && ev.message) || String(ev);
+    console.error('Runtime error:', msg);
+    try{ show(msg); }catch(e){}
+  });
+  window.addEventListener('unhandledrejection', (ev)=>{
+    const msg = ev.reason && ev.reason.stack ? ev.reason.stack : String(ev.reason);
+    console.error('Unhandled rejection:', msg);
+    try{ show('Unhandled rejection: ' + msg); }catch(e){}
+  });
+})();
+
 const NAME = 'Crine';
 const links = [
   {url: 'https://github.com/crinemodd', title: 'GitHub'},
