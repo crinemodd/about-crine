@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>About</title>
+  <style>
+    :root{--main-bg:#0b0b0b;--page-width:980px}
+    html,body{height:100%;margin:0}
+    body{font-family:Poppins,Inter,system-ui,Arial,sans-serif;background-color:var(--main-bg);color:#fff;position:relative;overflow-x:hidden}
+    /* background image is a back layer with 0 opacity by default; it will fade in when body.reveal is set */
+    body::before{content:'';position:fixed;inset:0;z-index:-1;background-image:url('https://i.pinimg.com/736x/a1/3c/23/a13c23d97e668a75bcf1bcc679b148fe.jpg');background-size:cover;background-position:center 85%;background-repeat:no-repeat;opacity:0;transition:opacity 650ms ease-in-out}
+    body.reveal::before{opacity:1}
+
+    /* The colored wall (main area) that appears on load - solid color */
+    .page{width:var(--page-width);max-width:calc(100% - 48px);margin:40px auto;padding:40px;background:var(--main-bg);border-radius:14px;box-shadow:0 20px 80px rgba(0,0,0,0.6);position:relative;z-index:2}
+
+    h1{margin:0 0 18px;font-size:36px}
+    p{margin:0 0 12px;color:rgba(255,255,255,0.92);line-height:1.6}
+
+    /* wizard button */
+    #wizard-btn{position:fixed;right:18px;bottom:18px;z-index:10010;background:rgba(255,255,255,0.06);color:#fff;border:1px solid rgba(255,255,255,0.12);padding:10px 14px;border-radius:14px;font-weight:700;cursor:pointer;backdrop-filter:blur(6px)}
+    #wizard-btn:hover{transform:translateY(-2px)}
+
+    @media (max-width:520px){.page{margin:20px;padding:20px}.h1{font-size:28px}}
+  </style>
+</head>
+<body>
+  <div id="main-wall" class="page" style="display:block;visibility:visible;">
+    <h1>About</h1>
+    <p>Hello — I’m Crine. This is my About page. The colored "wall" you see is intentional and only I can edit it by changing this file in the codespace.</p>
+    <p>If you want the wall removed so the background image shows fully, press the wizard button at the bottom-right.</p>
+  </div>
+
+  <button id="wizard-btn" aria-label="Wizard">wizard</button>
+
+  <script>
+    (function(){
+      const btn = document.getElementById('wizard-btn');
+      const wall = document.getElementById('main-wall');
+      let revealed = false;
+
+      // Ensure wall is visible on load and image hidden
+      wall.style.display = 'block';
+      document.body.classList.remove('reveal');
+      btn.textContent = 'wizard';
+
+      btn.addEventListener('click', ()=>{
+        revealed = !revealed;
+        if(revealed){
+          // reveal the background image by adding class to body (fades in)
+          document.body.classList.add('reveal');
+          btn.textContent = 'hide wizard';
+        } else {
+          document.body.classList.remove('reveal');
+          btn.textContent = 'wizard';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
